@@ -24,25 +24,29 @@ int main() {
     std::cout << std::endl;
     std::ofstream dataFile("result/data.txt");
     dataFile << "n getAllPerms getPerm1 getPerm2\n";
+    unsigned int seed = 42;
     for (int n = 1; n <= 9; ++n) {
         std::vector<char> alphabet;
         for (int i = 0; i < n; ++i) alphabet.push_back('1' + i);
         PMTree tree(alphabet);
         int total = 1;
         for (int i = 1; i <= n; ++i) total *= i;
-        int targetNum = (rand() % total) + 1;
+        int targetNum = (rand_r(&seed) % total) + 1;
         auto start = std::chrono::high_resolution_clock::now();
         std::vector<std::vector<char>> a = getAllPerms(tree);
         auto end = std::chrono::high_resolution_clock::now();
-        double tAll = std::chrono::duration<double, std::micro>(end - start).count();
+        double tAll = std::chrono::duration<double,
+            std::micro>(end - start).count();
         start = std::chrono::high_resolution_clock::now();
         std::vector<char> p1 = getPerm1(tree, targetNum);
         end = std::chrono::high_resolution_clock::now();
-        double tP1 = std::chrono::duration<double, std::micro>(end - start).count();
+        double tP1 = std::chrono::duration<double,
+            std::micro>(end - start).count();
         start = std::chrono::high_resolution_clock::now();
         std::vector<char> p2 = getPerm2(tree, targetNum);
         end = std::chrono::high_resolution_clock::now();
-        double tP2 = std::chrono::duration<double, std::micro>(end - start).count();
+        double tP2 = std::chrono::duration<double,
+            std::micro>(end - start).count();
         dataFile << n << " " << tAll << " " << tP1 << " " << tP2 << "\n";
         std::cout << "n=" << n << " processed." << std::endl;
     }
