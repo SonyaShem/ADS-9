@@ -4,6 +4,7 @@
 #include  <locale>
 #include  <cstdlib>
 #include <algorithm>
+#include <vector>
 #include  "tree.h"
 
 PMTree::PMTree(std::vector<char> in) {
@@ -11,15 +12,12 @@ PMTree::PMTree(std::vector<char> in) {
     std::sort(in.begin(), in.end());
     buildTree(root, in);
 }
-
 PMTree::~PMTree() {
     clearTree(root);
 }
-
 Node* PMTree::getRoot() const {
     return root;
 }
-
 void PMTree::buildTree(Node* current, std::vector<char> remaining) {
     if (remaining.empty()) return;
     for (size_t i = 0; i < remaining.size(); ++i) {
@@ -30,16 +28,15 @@ void PMTree::buildTree(Node* current, std::vector<char> remaining) {
         buildTree(child, nextRemaining);
     }
 }
-
-void PMTree::clearTree(Node* current) {
+void clearTree(Node* current) {
     if (!current) return;
     for (size_t i = 0; i < current->children.size(); ++i) {
         clearTree(current->children[i]);
     }
     delete current;
 }
-
-void collectPerms(Node* node, std::vector<char>& currentPath, std::vector<std::vector<char>>& result) {
+void collectPerms(Node* node, std::vector<char>& currentPath,
+                  std::vector<std::vector<char>>& result) {
     if (!node) return;
     if (node->value != '\0') {
         currentPath.push_back(node->value);
@@ -55,27 +52,23 @@ void collectPerms(Node* node, std::vector<char>& currentPath, std::vector<std::v
         currentPath.pop_back();
     }
 }
-
 std::vector<std::vector<char>> getAllPerms(const PMTree& tree) {
     std::vector<std::vector<char>> result;
     std::vector<char> currentPath;
     collectPerms(tree.getRoot(), currentPath, result);
     return result;
 }
-
 std::vector<char> getPerm1(const PMTree& tree, int num) {
     if (num <= 0) return std::vector<char>();
     std::vector<std::vector<char>> all = getAllPerms(tree);
     if (num > static_cast<int>(all.size())) return std::vector<char>();
     return all[num - 1];
 }
-
 int factorial(int n) {
     int res = 1;
     for (int i = 1; i <= n; ++i) res *= i;
     return res;
 }
-
 std::vector<char> getPerm2(const PMTree& tree, int num) {
     if (num <= 0) return std::vector<char>();
     Node* current = tree.getRoot();
