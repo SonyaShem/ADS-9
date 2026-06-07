@@ -28,7 +28,7 @@ void PMTree::buildTree(Node* current, std::vector<char> remaining) {
         buildTree(child, nextRemaining);
     }
 }
-void clearTree(Node* current) {
+void PMTree::clearTree(Node* current) {
     if (!current) return;
     for (size_t i = 0; i < current->children.size(); ++i) {
         clearTree(current->children[i]);
