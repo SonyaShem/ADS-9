@@ -5,20 +5,18 @@
 struct Node {
     char value;
     std::vector<Node*> children;
-    Node(char val) : value(val) {}
+    explicit Node(char val) : value(val) {}
 };
-
 class PMTree {
-  private:
+ private:
     Node* root;
     void buildTree(Node* current, std::vector<char> remaining);
     void clearTree(Node* current);
-  public:
-    PMTree(std::vector<char> in);
+ public:
+    explicit PMTree(std::vector<char> in);
     ~PMTree();
     Node* getRoot() const;
 };
-
 std::vector<std::vector<char>> getAllPerms(const PMTree& tree);
 std::vector<char> getPerm1(const PMTree& tree, int num);
 std::vector<char> getPerm2(const PMTree& tree, int num);
